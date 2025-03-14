@@ -13,6 +13,11 @@ services:
         condition: service_healthy
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
   mongo:
     image: mongo:6.0
     container_name: mongo
@@ -25,23 +30,28 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=example
       - MONGO_INITDB_DATABASE=api
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh "mongodb://root:example@localhost:27017" --quiet
       interval: 5s
       timeout: 5s
       retries: 5
     networks:
       - app-network
-      # frontend:
-      #   build: ./frontend
-      #   ports:
-      #     - "3001:3000"
-      #   environment:
-      #     - NEXT_PUBLIC_API_URL=http://api:3000
-      #   depends_on:
-      #     api:
-      #       condition: service_healthy
-      #   networks:
-      #     - app-network
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api:3000
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 volumes:
   mongo_data:
 networks:

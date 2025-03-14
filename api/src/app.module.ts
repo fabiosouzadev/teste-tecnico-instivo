@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EmployeesModule } from './employees/employees.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { EmployeesModule } from './employees/employees.module';
     }),
 
     // Modulos
+    HealthModule,
     EmployeesModule,
   ],
 })

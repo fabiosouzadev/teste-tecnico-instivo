@@ -79,11 +79,12 @@ export class EmployeesService {
   }
 
   async findOne(id: string): Promise<EmployeeResponseDto> {
-    const result = await this.employeeModel.findById(id).lean();
-    if (!result) {
+    try {
+      const result = await this.employeeModel.findById(id).lean();
+      return this.toResponseDto(result);
+    } catch (error) {
       throw new NotFoundException(`Registro com ID ${id} nao encontrado`);
     }
-    return this.toResponseDto(result);
   }
 
   private calculateDateDifference(startDate: Date) {

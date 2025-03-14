@@ -119,7 +119,6 @@ export class EmployeesController {
     type: EmployeeResponseDto,
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Registro não encontrado' })
-  @ApiResponse({ status: HttpStatus.INTERNAL_SERVER_ERROR, description: 'Erro interno no servidor' })
   async findOne(@Param('id') id: string): Promise<EmployeeResponseDto> {
     return this.employeesService.findOne(id);
   }

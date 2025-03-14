@@ -1,18 +1,17 @@
-# frontend/Dockerfile
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
 # Cache de dependências
-COPY package*.json ./
-RUN npm ci --quiet
+COPY package.json package-lock.json* ./
+RUN npm ci --no-audit --quiet
 
-# Build da aplicação
+# Copiar arquivos e construir
 COPY . .
 RUN npm run build && \
     npm prune --production
 
-# Imagem final
+# Estágio de produção
 FROM node:18-alpine
 
 WORKDIR /app
@@ -24,13 +23,16 @@ RUN apk add --no-cache tini && \
     chown -R app:app /app
 USER app
 
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# Copiar arquivos necessários
+COPY --from=builder --chown=app:app /app/public ./public
+COPY --from=builder --chown=app:app /app/.next/standalone ./
+COPY --from=builder --chown=app:app /app/.next/static ./.next/static
 
+# Variáveis de ambiente
 ENV NODE_ENV=production
 ENV PORT=3000
 EXPOSE ${PORT}
 
+# Iniciar aplicação
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "server.js"]
