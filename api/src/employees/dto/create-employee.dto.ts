@@ -13,13 +13,13 @@ export class CreateEmployeeDto {
     example: 5000,
     description: 'Valor do salário bruto'
   })
-  @IsPositive()
+  @IsPositive({message: 'Insira um numero válido'})
   grossSalary: number;
 
   @ApiProperty({
     example: '01001000',
     description: 'CEP com 8 dígitos (sem traço)'
   })
-  @Length(8, 8)
+  @Length(8, 8, {message: 'CEP deve conter exatamente 8 dígitos'})
   cep: string;
 }
