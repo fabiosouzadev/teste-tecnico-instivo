@@ -5,6 +5,7 @@ import { EmployeesController } from './controllers/employees.controller';
 import { EmployeesService } from './services/employees.service';
 import { ViaCepService } from './services/viacep.service';
 import { Employee, EmployeeSchema } from './schemas/employee.schema';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { Employee, EmployeeSchema } from './schemas/employee.schema';
       { name: Employee.name, schema: EmployeeSchema },
     ]),
     HttpModule,
+    CacheModule.register(),
   ],
   controllers: [EmployeesController],
   providers: [EmployeesService, ViaCepService],

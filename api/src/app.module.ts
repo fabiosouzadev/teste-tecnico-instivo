@@ -15,11 +15,7 @@ import { EmployeesModule } from './employees/employees.module';
       useFactory: async (configService: ConfigService) => ({
         uri:
           configService.get<string>('MONGODB_URI') ||
-          'mongodb://mongo:27017/api',
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 5000,
-        retryAttempts: 3,
+          'mongodb://root:example@mongo:27017/api?authSource=admin',
       }),
     }),
 

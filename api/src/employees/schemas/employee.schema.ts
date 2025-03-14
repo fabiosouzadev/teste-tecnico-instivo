@@ -1,9 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
+export type EmployeeDocument = HydratedDocument<Employee>
+
 @Schema()
-export class Employee extends Document {
+export class Employee {
   @ApiProperty()
   @Prop({ required: true })
   admissionDate: Date;
@@ -31,6 +33,12 @@ export class Employee extends Document {
   @ApiProperty()
   @Prop({ type: Object })
   address: Record<string, any>;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
+
+  @Prop({ default: Date.now })
+  updatedAt: Date;
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);
