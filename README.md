@@ -87,6 +87,6 @@ curl --location 'localhost:3000/employees?page=1&limit=5'
 #### Pegar registro por id
 ```sh
 curl --location 'localhost:3000/employees/{id}'
-```sh
+```
 
 
