@@ -16,10 +16,11 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Configuração de segurança
-RUN apk add --no-cache tini && \
-    addgroup -S app && \
-    adduser -S app -G app && \
+# Instalar Tini para gerenciamento de processos
+RUN apk add --no-cache tini
+
+# Criar usuário não-root
+RUN addgroup -S app && adduser -S app -G app && \
     chown -R app:app /app
 USER app
 
