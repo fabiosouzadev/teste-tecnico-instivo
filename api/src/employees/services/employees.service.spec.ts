@@ -73,7 +73,6 @@ describe('EmployeesService', () => {
 
     it('should throw error for invalid CEP', async () => {
       mockViaCepService.search.mockRejectedValue(new Error('CEP inválido'));
-      
       await expect(service.create({
         admissionDate: '2020-01-01',
         grossSalary: 5000,
@@ -116,7 +115,6 @@ describe('EmployeesService', () => {
       });
 
       const result = await service.findOne('507f1f77bcf86cd799439011');
-      
       expect(result).toMatchObject(mockEmployee);
     });
 
