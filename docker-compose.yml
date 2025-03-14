@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  api:
+    build: ./api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/api
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - app-network
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+      # frontend:
+      #   build: ./frontend
+      #   ports:
+      #     - "3001:3000"
+      #   environment:
+      #     - NEXT_PUBLIC_API_URL=http://api:3000
+      #   depends_on:
+      #     api:
+      #       condition: service_healthy
+      #   networks:
+      #     - app-network
+volumes:
+  mongo_data:
+networks:
+  app-network:
+    driver: bridge
