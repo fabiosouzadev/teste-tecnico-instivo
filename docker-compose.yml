@@ -42,9 +42,9 @@ services:
       - "8080:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://api:3000
-    depends_on:
-      api:
-        condition: service_healthy
+    # depends_on:
+    #   api:
+    #     condition: service_healthy
     networks:
       - app-network
     healthcheck:

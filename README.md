@@ -37,4 +37,56 @@ O endpoint principal deverá receber data de admissão, valor salarial bruto e C
 ### Tratamento de Erros:
 - Criar uma aplicação em Next.js que consuma a API desenvolvida, permitindo inserção e exibição dos resultados de forma amigável. data de admissão, valor do salário bruto e dados do CEP.
 
+## Como rodar o projeto?
+
+```sh
+docker-compose up --build -d
+```
+### Acessar o frontend:
+```sh
+http://localhost:8080
+```
+### Acessar o backend:
+```sh
+http://localhost:3000
+```
+### Testar a API
+- Importar no Postman o arquivo em:
+
+```sh
+assets/teste_instivo.postman_collection.json
+
+```
+
+ou
+
+- usar cURL:
+
+#### Fazer uma requisição
+```sh
+curl --location 'localhost:3000/employees' \
+--header 'Content-Type: application/json' \
+--data '{
+   "admissionDate":"2020-01-01",
+   "grossSalary":8000,
+   "cep":"86080470"
+}'
+```
+
+#### Pegar todos os registros
+```sh
+curl --location 'localhost:3000/employees'
+
+```
+#### Pegar registros com paginacao
+```sh
+curl --location 'localhost:3000/employees?page=1&limit=5'
+
+```
+
+#### Pegar registro por id
+```sh
+curl --location 'localhost:3000/employees/{id}'
+```sh
+
 
